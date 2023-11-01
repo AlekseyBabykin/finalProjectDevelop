@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
-import Container from "react-bootstrap/Container";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import Image from "react-bootstrap/Image";
-import { Button, Card } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Form,
+  Row,
+  Col,
+  Container,
+  Image,
+} from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
-import { createBasketDevice, fetchOneDevice } from "../http/deviceAPI";
+import {
+  createBasketDevice,
+  createRating,
+  fetchOneDevice,
+} from "../http/deviceAPI";
 import { SHOP_ROUTE } from "../utils/consts";
 
 const DevicePage = () => {
@@ -13,6 +21,23 @@ const DevicePage = () => {
   const [dataCat, setDataCat] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const [selectedValue, setSelectedValue] = useState(null);
+
+  const handleRadioChange = (e) => {
+    setSelectedValue(e.target.value);
+    console.log(e.target.value);
+
+    try {
+      createRating({
+        user_id: JSON.parse(localStorage.getItem("userInfo")).id,
+        device_id: id,
+        rate: e.target.value,
+      }).then((result) => console.log(result));
+    } catch (err) {
+      alert("err.response.data.massage");
+    }
+  };
 
   useEffect(() => {
     // fetchOneDevice(id).then((data) => setDevice(data));
@@ -69,14 +94,70 @@ const DevicePage = () => {
         </Col>
         <Col xs={4}>
           <div className="d-flex flex-column align-items-center">
-            <h3>{device[0] ? device[0].name : ""}</h3>
+            <h1>{device[0] ? device[0].name : ""}</h1>
+            <Form style={{ marginTop: "30px", fontSize: 16 }}>
+              {["radio"].map((type) => (
+                <div key={`inline-${type}`}>
+                  <Form.Check
+                    inline
+                    label="1"
+                    name="group1"
+                    value={1}
+                    type={type}
+                    id={`inline-${type}-1`}
+                    onChange={handleRadioChange}
+                    checked={selectedValue === "1"}
+                  />
+                  <Form.Check
+                    inline
+                    label="2"
+                    name="group1"
+                    value={2}
+                    type={type}
+                    id={`inline-${type}-2`}
+                    onChange={handleRadioChange}
+                    checked={selectedValue === "2"}
+                  />
+                  <Form.Check
+                    inline
+                    label="3"
+                    name="group1"
+                    value={3}
+                    type={type}
+                    id={`inline-${type}-3`}
+                    onChange={handleRadioChange}
+                    checked={selectedValue === "3"}
+                  />
+                  <Form.Check
+                    inline
+                    label="4"
+                    name="group1"
+                    value={4}
+                    type={type}
+                    id={`inline-${type}-4`}
+                    onChange={handleRadioChange}
+                    checked={selectedValue === "4"}
+                  />
+                  <Form.Check
+                    inline
+                    label="5"
+                    name="group1"
+                    value={5}
+                    type={type}
+                    id={`inline-${type}-5`}
+                    onChange={handleRadioChange}
+                    checked={selectedValue === "5"}
+                  />
+                </div>
+              ))}
+            </Form>
             <div
               className="d-flex align-items-center justify-content-center"
               style={{
                 backgroundImage: `url(
               "https://www.pngitem.com/pimgs/m/135-1353166_star-icon-good-icon-png-transparent-png.png") no-repeat center  center`,
                 width: 240,
-                height: 240,
+                height: 200,
                 backgroundSize: "cover",
                 fontSize: 64,
               }}

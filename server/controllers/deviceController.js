@@ -59,11 +59,11 @@ const getAllDevice = async (req, res) => {
 const getOneDevice = async (req, res) => {
   const id = req.params.id;
   const device = await _getOneDevice(id);
-  console.log("device.id", id);
+
   const device_info = await _getDeviceinfo(id);
-  console.log(device);
+
   device[0].info = device_info;
-  console.log(device);
+
   res.json(device);
 };
 

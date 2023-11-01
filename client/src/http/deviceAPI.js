@@ -73,3 +73,10 @@ export const deleteDeviceBasket = async (id) => {
   const { data } = await $host.delete("api/basket/" + id);
   return data;
 };
+
+export const createRating = async (rating) => {
+  console.log("rating=>", rating);
+  const { data } = await $host.post("api/rating/", rating);
+
+  return data;
+};

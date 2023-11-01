@@ -9,7 +9,12 @@ const _createDevice = ({ name, price, brand_id, type_id, img: fileName }) => {
     ["id", "name", "brand_id", "type_id", "price", "rating", "img"]
   );
 };
-
+const _updateDevice = (rating, id) => {
+  return db("device")
+    .update({ rating })
+    .where({ id })
+    .returning(["id", "name", "brand_id", "type_id", "price", "rating", "img"]);
+};
 const _getAllDevice = (brand_id, type_id, limit, page) => {
   page = page || 1;
   limit = limit || 9;
@@ -62,4 +67,5 @@ module.exports = {
   _getOneDevice,
   _deleteDevice,
   _totalCountDevice,
+  _updateDevice,
 };

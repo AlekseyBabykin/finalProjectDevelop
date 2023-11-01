@@ -14,11 +14,15 @@ import { Button } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 
+import { googleLogout } from "@react-oauth/google";
+
 const NavBar = observer(() => {
   const { user } = useContext(Context);
   const navigate = useNavigate();
 
   const logOut = () => {
+    googleLogout();
+
     user.setUser({});
     user.setIsAuth(false);
     localStorage.removeItem("userInfo");

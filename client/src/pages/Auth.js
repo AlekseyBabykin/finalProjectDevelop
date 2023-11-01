@@ -1,13 +1,21 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Card, Button } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
-import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "../utils/consts";
+import {
+  GOOGLE_AUTH,
+  LOGIN_ROUTE,
+  REGISTRATION_ROUTE,
+  SHOP_ROUTE,
+} from "../utils/consts";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { registration, login } from "../http/userAPI";
 import { observer } from "mobx-react-lite";
 import { Context } from "..";
 import Snowfall from "react-snowfall";
+
+import { googleLogout, useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 
 const Auth = observer(() => {
   const { user } = useContext(Context);
@@ -16,6 +24,43 @@ const Auth = observer(() => {
   const isLogin = location.pathname === LOGIN_ROUTE;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [userGoogle, setUserGoogle] = useState([]);
+  const [profile, setProfile] = useState([]);
+
+  const loginGoogle = useGoogleLogin({
+    onSuccess: (codeResponse) => setUserGoogle(codeResponse),
+    onError: (error) => console.log("Login Failed:", error),
+  });
+  useEffect(() => {
+    if (userGoogle) {
+      axios
+        .get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${userGoogle.access_token}`,
+          {
+            headers: {
+              Authorization: `Bearer ${userGoogle.access_token}`,
+              Accept: "application/json",
+            },
+          }
+        )
+        .then(async (res) => {
+          setProfile(res.data);
+          let dataGoogleUser;
+          if (isLogin) {
+            dataGoogleUser = await login(res.data.email, res.data.id);
+            localStorage.setItem("userInfo", JSON.stringify(dataGoogleUser));
+          } else {
+            dataGoogleUser = await registration(res.data.email, res.data.id);
+            localStorage.setItem("userInfo", JSON.stringify(dataGoogleUser));
+          }
+          user.setUser(user);
+          user.setIsAuth(true);
+          navigate(SHOP_ROUTE);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [userGoogle]);
 
   const click = async () => {
     try {
@@ -77,6 +122,7 @@ const Auth = observer(() => {
               {isLogin ? "Apply" : "Registration"}
             </Button>
           </div>
+          <Button onClick={loginGoogle}>Google AUTH</Button>
         </Form>
       </Card>
     </Container>
