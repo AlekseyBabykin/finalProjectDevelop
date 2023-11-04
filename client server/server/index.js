@@ -37,7 +37,7 @@ app.use("/api/basket", bk_router);
 app.use("/api/rating", r_router);
 app.use(errorHandler);
 
-// app.use(express.static(path.join(__dirname, "/client/build")));
-// app.get("*", (req, res) => {
-//   res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
-// });
+app.use(express.static(path.join(__dirname, "/client/build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+});

@@ -122,7 +122,7 @@ const DevicePage = () => {
           <Image
             width={300}
             height={300}
-            src={device[0] ? "http://localhost:5000/" + device[0].img : ""}
+            src={device[0] ? "/" + device[0].img : ""}
             // src={device[0] ? process.env.REACT_APP_API_URL + device[0].img : ""}
           />
         </Col>

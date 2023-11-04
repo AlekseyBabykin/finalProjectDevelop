@@ -64,7 +64,7 @@ const Basket = () => {
                 <Image
                   width={100}
                   height={100}
-                  src={el ? "http://localhost:5000/" + el.img : ""}
+                  src={el ? "/" + el.img : ""}
                   // src={el ? process.env.REACT_APP_API_URL + el.img : ""}
                 ></Image>
               </Col>

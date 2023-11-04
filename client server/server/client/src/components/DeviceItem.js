@@ -60,7 +60,7 @@ const DeviceItem = ({ device }) => {
             width={200}
             height={250}
             // src={process.env.REACT_APP_API_URL + device.img}
-            src={"http://localhost:5000/" + device.img}
+            src={"/" + device.img}
           />
           <div class="card__theme">
             <div class="card__theme-box">
