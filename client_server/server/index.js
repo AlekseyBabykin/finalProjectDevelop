@@ -21,9 +21,9 @@ app.use(fileUpload({}));
 app.use(cookieParser());
 app.use(cors());
 
-app.get("/", (req, res) => {
-  res.status(200).json({ message: "server working!!!" });
-});
+// app.get("/", (req, res) => {
+//   res.status(200).json({ message: "server working!!!" });
+// });
 
 app.listen(process.env.PORT, () => {
   console.log(`run on port ${process.env.PORT}`);
