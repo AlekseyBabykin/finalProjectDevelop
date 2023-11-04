@@ -49,8 +49,8 @@ body {
 .card {
   flex: initial;
   position: relative;
-  height: 250px;
-  width: 250px;
+  height: 200px;
+  width: 200px;
   -moz-perspective: 200rem;
   perspective: 200rem;
   margin: 2rem;
@@ -190,7 +190,7 @@ body {
   }
   .card__theme {
     position: relative;
-    top: 0;
+    /* top: 0; */
     left: 0;
     transform: translate(0);
     width: 100%;
@@ -201,6 +201,6 @@ body {
     margin-bottom: 1.5rem;
   }
   .card__title {
-    font-size: 4rem;
+    font-size: 2rem;
   }
 }

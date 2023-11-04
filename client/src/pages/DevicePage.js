@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Marquee from "react-fast-marquee";
 import {
   Button,
   Card,
@@ -15,18 +16,23 @@ import {
   fetchOneDevice,
 } from "../http/deviceAPI";
 import { SHOP_ROUTE } from "../utils/consts";
+import useSound from "use-sound";
+import dogBark from "../sound/cartoon_small_dog_bark_001_72028.mp3";
+import Alert from "archis-react-alert";
+import "/node_modules/archis-react-alert/dist/style.css";
 
 const DevicePage = () => {
   const [device, setDevice] = useState({ info: [] });
   const [dataCat, setDataCat] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
+  const [show, setShow] = useState(true);
 
   const [selectedValue, setSelectedValue] = useState(null);
+  const [play] = useSound(dogBark, { volume: 0.5 });
 
   const handleRadioChange = (e) => {
     setSelectedValue(e.target.value);
-    console.log(e.target.value);
 
     try {
       createRating({
@@ -57,9 +63,10 @@ const DevicePage = () => {
             device_id: device[0].id,
             user_id: JSON.parse(localStorage.getItem("userInfo")).id,
           }).then((data) => {
+            setShow(true);
+
             navigate(SHOP_ROUTE);
-            console.log(dataCat);
-            alert(dataCat.text);
+            play();
           })
         : alert("not acess");
     } catch (err) {
@@ -68,14 +75,14 @@ const DevicePage = () => {
   };
   const fetchDataCat = async () => {
     try {
-      const response = await fetch(
-        "https://uselessfacts.jsph.pl/random.json?language=en"
-      ); // Replace with the URL you want to fetch
+      const response = await fetch("https://dogapi.dog/api/v2/facts"); // Replace with the URL you want to fetch
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+
       const jsonData = await response.json(); // Parse response as JSON
-      setDataCat(jsonData);
+
+      setDataCat(jsonData.data[0].attributes.body);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -83,6 +90,16 @@ const DevicePage = () => {
 
   return (
     <Container className="mt-3">
+      <div style={{ fontSize: 25 }}>
+        <Alert
+          show={show}
+          setShow={setShow}
+          time={5000} // time before the alert closes in ms
+          type={"info"} // other types: "error","warning","success"
+          text={dataCat} // Text to show in the alert
+        />
+      </div>
+
       <Row>
         <Col xs={4} className="d-flex flex-column align-items-center">
           <Image
@@ -94,8 +111,16 @@ const DevicePage = () => {
         </Col>
         <Col xs={4}>
           <div className="d-flex flex-column align-items-center">
+            <h1>૮ ´• ﻌ ´• ა</h1>
             <h1>{device[0] ? device[0].name : ""}</h1>
-            <Form style={{ marginTop: "30px", fontSize: 16 }}>
+            <Form
+              style={{
+                marginTop: "40px",
+                fontSize: 20,
+                borderBlockStyle: "dashed",
+              }}
+            >
+              <h1>Your score is in bones:</h1>
               {["radio"].map((type) => (
                 <div key={`inline-${type}`}>
                   <Form.Check
@@ -162,7 +187,7 @@ const DevicePage = () => {
                 fontSize: 64,
               }}
             >
-              {device[0] ? device[0].rating : ""}
+              {device[0] ? device[0].rating : ""}🦴
             </div>
           </div>
         </Col>
@@ -177,18 +202,22 @@ const DevicePage = () => {
               border: "4px solid lightgray",
             }}
           >
-            <h3>from: {device[0] ? device[0].price : ""} dollars. </h3>
-            <Button
-              variant={"outline-dark"}
-              onClick={() => addDeviceInBasket()}
-            >
-              add basket
-            </Button>
+            <h1>Price: {device[0] ? device[0].price : ""} 💲💲💲 </h1>
+            <Marquee>
+              {" "}
+              <Button
+                variant={"outline-dark"}
+                onClick={() => addDeviceInBasket()}
+                style={{ fontSize: 16 }}
+              >
+                add {device[0] ? device[0].name : ""} in bookmarks 📑
+              </Button>
+            </Marquee>
           </Card>
         </Col>
       </Row>
       <Row className="d-flex flex-column m-3">
-        <h1>Informations device</h1>
+        <h1>About Dog:</h1>
         {device[0] && device[0].info.length > 0 ? (
           device[0].info.map((el, index) => (
             <Row
@@ -196,6 +225,7 @@ const DevicePage = () => {
               style={{
                 background: index % 2 === 0 ? "lightgray" : "transparent",
                 padding: 10,
+                fontSize: 16,
               }}
             >
               {el.title}: {el.description}

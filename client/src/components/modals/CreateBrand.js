@@ -16,7 +16,7 @@ const CreateBrand = ({ show, onHide }) => {
     <Modal show={show} onHide={onHide} size="lg" centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          to add new Brand
+          to add new Breed
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>

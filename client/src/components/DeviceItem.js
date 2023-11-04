@@ -57,14 +57,16 @@ const DeviceItem = ({ device }) => {
 
         <div class="card__side card__side--front">
           <Image
-            width={250}
+            width={200}
             height={250}
             // src={process.env.REACT_APP_API_URL + device.img}
             src={"http://localhost:5000/" + device.img}
           />
           <div class="card__theme">
             <div class="card__theme-box">
-              <p class="card__title">{device.name}</p>
+              <div class="card__title" style={{ fontSize: 40, marginTop: 200 }}>
+                {device.name}
+              </div>
             </div>
           </div>
         </div>

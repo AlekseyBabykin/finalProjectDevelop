@@ -12,10 +12,13 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { registration, login } from "../http/userAPI";
 import { observer } from "mobx-react-lite";
 import { Context } from "..";
-import Snowfall from "react-snowfall";
+// import Snowfall from "react-snowfall";
+import "../style/Auth.css";
 
 import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import useSound from "use-sound";
+import boopSfx from "../sound/dog-bark-12.mp3";
 
 const Auth = observer(() => {
   const { user } = useContext(Context);
@@ -27,6 +30,7 @@ const Auth = observer(() => {
 
   const [userGoogle, setUserGoogle] = useState([]);
   const [profile, setProfile] = useState([]);
+  const [play] = useSound(boopSfx, { volume: 0.5 });
 
   const loginGoogle = useGoogleLogin({
     onSuccess: (codeResponse) => setUserGoogle(codeResponse),
@@ -74,6 +78,7 @@ const Auth = observer(() => {
       }
       user.setUser(user);
       user.setIsAuth(true);
+      play();
       navigate(SHOP_ROUTE);
     } catch (e) {
       alert(e.response.data.massage);
@@ -81,16 +86,23 @@ const Auth = observer(() => {
   };
   return (
     <Container
-      className="d-flex justify-content-center align-items-center"
-      style={{ height: window.innerHeight - 54 }}
+      className="d-flex flex-column justify-content-center align-items-center"
+      style={{ height: window.innerHeight - 54, backgroundColor: "grey" }}
     >
-      <Snowfall
-        color="black"
-        style={{ background: "#fff" }}
-        snowflakeCount={550}
-      />
+      <div class="cat" style={{ height: "35% " }}>
+        <div class="ear ear--left"></div>
+        <div class="ear ear--right"></div>
+        <div class="face">
+          <div class="eye eye--left">
+            <div class="eye-pupil"></div>
+          </div>
+          <div class="eye eye--right">
+            <div class="eye-pupil"></div>
+          </div>
+          <div class="muzzle"></div>
+        </div>
+      </div>
       <Card style={{ width: "600px" }} className="p-5">
-        <Snowfall color="grey" snowflakeCount={50} />
         <h2 className="m-auto">{isLogin ? "Login" : "Registration"}</h2>
         <Form className="d-flex flex-column">
           <Form.Control

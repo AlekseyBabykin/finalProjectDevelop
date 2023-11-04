@@ -52,7 +52,7 @@ const CreateDevice = observer(({ show, onHide }) => {
     <Modal show={show} onHide={onHide} size="lg" centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          to add new Device
+          to add new animal
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -74,7 +74,7 @@ const CreateDevice = observer(({ show, onHide }) => {
           </Dropdown>
           <Dropdown className="mt-3">
             <Dropdown.Toggle>
-              {device.selectedBrand.name || "choice brand"}
+              {device.selectedBrand.name || "choice breed"}
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {device.brands.map((el) => (
@@ -91,14 +91,14 @@ const CreateDevice = observer(({ show, onHide }) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="mt-3"
-            placeholder="write name device"
+            placeholder="write name Dog"
           />
           <Form.Control
             value={price}
             onChange={(e) => setPrice(Number(e.target.value))}
             className="mt-3"
             type="number"
-            placeholder="write price device"
+            placeholder="write price animal"
           />
           <Form.Control className="mt-3" type="file" onChange={selectFile} />
           <hr />

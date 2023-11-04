@@ -24,7 +24,7 @@ const DeleteBrand = observer(({ show, onHide }) => {
     <Modal show={show} onHide={onHide} size="lg" centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Choice brand for delete
+          Choice breed for delete
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>

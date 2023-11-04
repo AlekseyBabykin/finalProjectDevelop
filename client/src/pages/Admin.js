@@ -33,14 +33,14 @@ const Admin = () => {
           variant={"outline-dark"}
           className="mt-5 p-3"
         >
-          to add brand
+          to add breed
         </Button>
         <Button
           className="mt-1 p-3"
           onClick={() => setDeleteBrandVisible(true)}
         >
           {" "}
-          delete brand
+          delete breed
         </Button>
       </Row>
 
@@ -49,7 +49,7 @@ const Admin = () => {
         variant={"outline-dark"}
         className="mt-5 p-3"
       >
-        to add device
+        to add animal
       </Button>
       <CreateBrand show={brandVisible} onHide={() => setBrandVisible(false)} />
       <CreateDevice
