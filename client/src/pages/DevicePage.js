@@ -15,18 +15,20 @@ import {
   createRating,
   fetchOneDevice,
 } from "../http/deviceAPI";
-import { SHOP_ROUTE } from "../utils/consts";
+import { LOGIN_ROUTE, SHOP_ROUTE } from "../utils/consts";
 import useSound from "use-sound";
 import dogBark from "../sound/cartoon_small_dog_bark_001_72028.mp3";
 import Alert from "archis-react-alert";
 import "/node_modules/archis-react-alert/dist/style.css";
+import AlertCastom from "../components/AlertCastom";
 
 const DevicePage = () => {
   const [device, setDevice] = useState({ info: [] });
   const [dataCat, setDataCat] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
-  const [show, setShow] = useState(true);
+  const [showAlertSuccess, setShowAlertSuccess] = useState(false);
+  const [showAlertWarning, setShowAlertWarning] = useState(false);
 
   const [selectedValue, setSelectedValue] = useState(null);
   const [play] = useSound(dogBark, { volume: 0.5 });
@@ -41,7 +43,11 @@ const DevicePage = () => {
         rate: e.target.value,
       }).then((result) => console.log(result));
     } catch (err) {
-      alert("err.response.data.massage");
+      setShowAlertWarning(true);
+      setTimeout(() => {
+        setShowAlertWarning(false);
+        navigate(LOGIN_ROUTE);
+      }, 2000);
     }
   };
 
@@ -58,19 +64,31 @@ const DevicePage = () => {
   }, []);
   const addDeviceInBasket = () => {
     try {
-      localStorage.getItem("token")
-        ? createBasketDevice({
-            device_id: device[0].id,
-            user_id: JSON.parse(localStorage.getItem("userInfo")).id,
-          }).then((data) => {
-            setShow(true);
-
+      if (localStorage.getItem("token")) {
+        createBasketDevice({
+          device_id: device[0].id,
+          user_id: JSON.parse(localStorage.getItem("userInfo")).id,
+        }).then((data) => {
+          setShowAlertSuccess(true);
+          setTimeout(() => {
+            setShowAlertSuccess(false);
             navigate(SHOP_ROUTE);
-            play();
-          })
-        : alert("not acess");
+          }, 4000);
+          play();
+        });
+      } else {
+        setShowAlertWarning(true);
+        setTimeout(() => {
+          setShowAlertWarning(false);
+          navigate(LOGIN_ROUTE);
+        }, 2000);
+      }
     } catch (err) {
-      alert("err.response.data.massage");
+      setShowAlertWarning(true);
+      setTimeout(() => {
+        setShowAlertWarning(false);
+        navigate(LOGIN_ROUTE);
+      }, 2000);
     }
   };
   const fetchDataCat = async () => {
@@ -91,13 +109,12 @@ const DevicePage = () => {
   return (
     <Container className="mt-3">
       <div style={{ fontSize: 25 }}>
-        <Alert
-          show={show}
-          setShow={setShow}
-          time={5000} // time before the alert closes in ms
-          type={"info"} // other types: "error","warning","success"
-          text={dataCat} // Text to show in the alert
-        />
+        {showAlertSuccess && (
+          <AlertCastom message={`🐕‍🦺${dataCat}♡🐾`} type="success" />
+        )}
+        {showAlertWarning && (
+          <AlertCastom message="not access" type="warning" />
+        )}
       </div>
 
       <Row>

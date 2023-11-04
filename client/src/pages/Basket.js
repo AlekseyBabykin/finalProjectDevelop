@@ -12,6 +12,7 @@ const Basket = () => {
   const [summ, setSumm] = useState(0);
   const [speed, setSpeed] = useState(5);
   const [play] = useSound(voyvoy, { volume: 0.5 });
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     fetchBasketDevices(JSON.parse(localStorage.getItem("userInfo")).id).then(
@@ -28,6 +29,7 @@ const Basket = () => {
       sum1 = el.price + sum1;
     });
     setSumm(sum1);
+    setShow(true);
   };
 
   const deleteDev = async (id) => {
@@ -95,8 +97,15 @@ const Basket = () => {
         )}
       </Row>
 
-      <DogButton />
-      <h3>purchase price: {summ} 🤑💰💸</h3>
+      {show && (
+        <div style={{ textAlign: "center" }}>
+          {" "}
+          <DogButton />
+          <h3 style={{ marginTop: 20, fontSize: 20 }}>
+            purchase price: 🤑 {summ} 💰💸
+          </h3>
+        </div>
+      )}
 
       <div class="stage">
         <div
@@ -110,7 +119,7 @@ const Basket = () => {
           }}
         >
           <Button variant={"outline-light"} onClick={handle}>
-            Click
+            click to buy
           </Button>
         </div>
       </div>

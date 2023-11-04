@@ -134,7 +134,9 @@ const Auth = observer(() => {
               {isLogin ? "Apply" : "Registration"}
             </Button>
           </div>
-          <Button onClick={loginGoogle}>Google AUTH</Button>
+          <Button style={{ marginTop: 10 }} onClick={loginGoogle}>
+            Google AUTH
+          </Button>
         </Form>
       </Card>
     </Container>

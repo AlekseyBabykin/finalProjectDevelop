@@ -67,6 +67,7 @@ const NavBar = observer(() => {
         ) : (
           <Nav className="ms-auto" style={{ color: "white" }}>
             <Button
+              style={{ fontSize: 20 }}
               variant={"outline-light"}
               onClick={() => navigate(LOGIN_ROUTE)}
             >
